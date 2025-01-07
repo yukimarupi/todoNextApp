@@ -1,28 +1,49 @@
-import { useUpdateTodo, useDeleteTodo, useToggleTodoCompletion } from '../hooks/useTodos';
+import React from 'react';
+import { useDeleteTodo, useToggleTodoCompletion } from '../hooks/useTodos';
 import { Todo } from '../types/todo';
+import { Box, Checkbox, Typography, Button } from '@mui/material';
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
-  const updateTodo = useUpdateTodo();
   const deleteTodo = useDeleteTodo();
   const toggleCompletion = useToggleTodoCompletion();
 
-  const handleUpdate = () => {
-    const updatedTodo = { title: todo.title, description: todo.description };
-    updateTodo.mutate({ id: todo.id, updatedTodo });
-  };
-
   return (
-    <li>
-      <input
-        type="checkbox"
-        checked={todo.completed}
-        onChange={() => toggleCompletion.mutate(todo.id)}
-      />
-      <h3>{todo.title}</h3>
-      <p>{todo.description}</p>
-      <button onClick={handleUpdate}>更新</button>
-      <button onClick={() => deleteTodo.mutate(todo.id)}>削除</button>
-    </li>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        p: 2,
+        mb: 2,
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        backgroundColor: todo.completed ? '#e8f5e9' : '#ffffff',
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Checkbox
+          checked={todo.completed}
+          onChange={() => toggleCompletion.mutate(todo.id)}
+          color="primary"
+        />
+        <Box>
+          <Typography variant="h6" sx={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+            {todo.title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            {todo.description}
+          </Typography>
+        </Box>
+      </Box>
+      <Button
+        variant="outlined"
+        color="error"
+        size="small"
+        onClick={() => deleteTodo.mutate(todo.id)}
+      >
+        削除
+      </Button>
+    </Box>
   );
 };
 

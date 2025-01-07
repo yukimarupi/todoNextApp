@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAddTodo } from '../hooks/useTodos';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 const AddTodoForm = () => {
   const addTodo = useAddTodo();
@@ -14,22 +15,34 @@ const AddTodoForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="タイトル"
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 400, mx: 'auto', mt: 4 }}
+    >
+      <Typography variant="h4" align="center">
+        TODOを追加
+      </Typography>
+      <TextField
+        label="タイトル"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
+        fullWidth
       />
-      <textarea
-        placeholder="説明"
+      <TextField
+        label="説明"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         required
-      ></textarea>
-      <button type="submit">追加</button>
-    </form>
+        multiline
+        rows={4}
+        fullWidth
+      />
+      <Button type="submit" variant="contained" color="primary" fullWidth>
+        追加
+      </Button>
+    </Box>
   );
 };
 
